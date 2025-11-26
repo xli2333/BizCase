@@ -2,38 +2,38 @@
 
 ![BizCase Banner](public/banner.png)
 
-## Overview
+## 项目概览
 
-BizCase Pro is an advanced AI-powered engine designed to generate professional Business School Case Studies and Teaching Notes. It leverages multi-agent workflows to conduct deep research, structure narrative frameworks, and draft comprehensive educational materials suitable for academic environments.
+BizCase Pro 是一款先进的 AI 驱动引擎，专为生成专业的商学院教学案例及教学指南而设计。它利用多智能体协作工作流，进行深度研究、构建叙事框架，并起草适合学术环境的综合教学材料。
 
-## Core Capabilities
+## 核心能力
 
-*   **Deep Research**: Aggregates information from global sources, financial reports, and uploaded internal documents to build a factual ground truth.
-*   **Strategic Frameworks**: Architectures case narratives with conflict, decision points, and quantitative backing.
-*   **Drafting & Polishing**: Produces high-quality, objective narratives and structured teaching guides.
-*   **Visual Analysis**: Automatically identifies data points and constructs Markdown tables for financial and market analysis.
-*   **Safety & Compliance**: Includes a manual "Firewall Check" to audit content for formatting, objectivity, and visual consistency before export.
+*   **深度研究 (Deep Research)**：聚合全球信息源、财务报告以及用户上传的内部文档，构建客观确凿的事实基准。
+*   **战略框架 (Strategic Frameworks)**：架构包含核心冲突、关键决策点和量化支撑数据的案例叙事结构。
+*   **起草与润色 (Drafting & Polishing)**：生成高质量、客观中立的叙事文本及结构化的教学指南。
+*   **可视化分析 (Visual Analysis)**：自动识别关键数据点，并构建 Markdown 表格以展示财务和市场分析数据。
+*   **安全与合规 (Safety & Compliance)**：包含人工“防火墙审查 (Firewall Check)”功能，在导出前审核内容的格式规范、客观性及视觉一致性。
 
-## How to Use
+## 使用指南
 
-1.  **Initialize**: Launch the application and enter your Google Gemini API Key. The key is stored locally in your browser for security.
-2.  **Define Topic**: Enter a company name, event, or specific business dilemma (e.g., "Luckin Coffee Financial Fraud").
-3.  **Upload Context (Optional)**: Attach PDF or text files to serve as the primary source of truth for the case.
-4.  **Select Objectives**: Choose or refine the specific learning goals for the case.
-5.  **Review Framework**: Approve the generated outline or request adjustments to the narrative arc.
-6.  **Generate & Refine**: The system writes the full case and teaching notes. Use the "Copilot" feature to make granular edits or the "Check" button to run a final quality assurance pass.
-7.  **Export**: Download the final documents as PDF.
+1.  **初始化系统**：启动应用并输入您的 Google Gemini API Key。密钥仅存储在您的本地浏览器中，确保安全。
+2.  **定义主题**：输入公司名称、事件或具体的商业困境（例如：“瑞幸咖啡财务造假案”）。
+3.  **上传资料 (可选)**：附上 PDF 或文本文件，作为案例生成的首要事实来源 (Ground Truth)。
+4.  **选择教学目标**：选择或微调案例的具体学习目标。
+5.  **审查框架**：批准生成的案例大纲，或要求调整叙事弧线。
+6.  **生成与精修**：系统将撰写完整的案例正文和教学指南。使用 "Copilot" 功能进行细粒度编辑，或点击 "Check" 按钮运行最终质量保证审查。
+7.  **导出**：将最终文档导出为 PDF 格式。
 
-## Deployment
+## 部署说明
 
-This project is optimized for deployment on Vercel.
+本项目已针对 Vercel 部署进行优化。
 
-1.  Push this repository to GitHub.
-2.  Import the project into Vercel.
-3.  The build settings (Vite) will be detected automatically.
-4.  No environment variables are required on the server side; API keys are client-side only.
+1.  将此仓库推送到 GitHub。
+2.  在 Vercel 中导入该项目。
+3.  构建设置 (Vite) 将被自动检测。
+4.  服务器端无需配置环境变量；API Key 仅在客户端侧管理。
 
-## Privacy
+## 隐私声明
 
-*   API Keys are never sent to our servers; they are used directly from the client browser to the Google Gemini API.
-*   All research and generation happen in real-time.
+*   API Key 绝不会发送至我们的服务器；它们直接从客户端浏览器发送至 Google Gemini API。
+*   所有的研究与生成过程均实时发生。
