@@ -5,12 +5,14 @@ import { CaseViewer } from './components/CaseViewer';
 import { ObjectiveSelection } from './components/ObjectiveSelection';
 import { FrameworkReview } from './components/FrameworkReview';
 import { ApiKeyInput } from './components/ApiKeyInput';
-import { MagnifyingGlassIcon, PaperClipIcon, DocumentTextIcon, XMarkIcon, LockOpenIcon } from '@heroicons/react/24/solid';
+import { SettingsModal } from './components/SettingsModal';
+import { MagnifyingGlassIcon, PaperClipIcon, DocumentTextIcon, XMarkIcon, LockOpenIcon, Cog6ToothIcon } from '@heroicons/react/24/solid';
 
 const App: React.FC = () => {
   const [topic, setTopic] = useState('');
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   
   const [caseData, setCaseData] = useState<CaseStudyData>({
     topic: '',
@@ -313,6 +315,15 @@ const App: React.FC = () => {
                 )}
                 
                 <button 
+                    onClick={() => setIsSettingsOpen(true)}
+                    className="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-slate-700 transition-colors uppercase tracking-widest"
+                    title="Model Settings"
+                >
+                    <Cog6ToothIcon className="w-4 h-4" />
+                    <span className="hidden sm:inline">Settings</span>
+                </button>
+
+                <button 
                     onClick={handleClearKey}
                     className="flex items-center gap-1 text-xs font-bold text-slate-300 hover:text-red-500 transition-colors uppercase tracking-widest"
                     title="Disconnect API Key"
@@ -323,6 +334,8 @@ const App: React.FC = () => {
             </div>
           </div>
         </nav>
+
+        <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
 
         <main className="mx-auto w-full">
           {isIdle && (

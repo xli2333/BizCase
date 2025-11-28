@@ -11,6 +11,10 @@ const getAiClient = () => {
   return new GoogleGenAI({ apiKey });
 };
 
+// Helper to get selected models
+const getSearchModel = () => localStorage.getItem('SEARCH_MODEL') || "gemini-2.5-flash";
+const getGenModel = () => localStorage.getItem('GEN_MODEL') || "gemini-3-pro-preview";
+
 // --- HELPER: RETRY LOGIC ---
 
 async function callWithRetry<T>(fn: () => Promise<T>, retries = 3, baseDelay = 2000): Promise<T> {
@@ -316,7 +320,7 @@ export const gatherInformation = async (
 ): Promise<{ context: string; sources: SearchSource[] }> => {
   
   const sources: SearchSource[] = [];
-  const model = "gemini-2.5-flash"; 
+  const model = getSearchModel(); 
 
   const searchAndCollect = async (rolePrompt: string, type: string) => {
     onProgress(`正在进行 ${type} 维度的深度研究...`);
@@ -397,7 +401,7 @@ export const generateLearningObjectives = async (context: string): Promise<strin
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview", 
+    model: getGenModel(), 
     contents: prompt,
     config: {
       systemInstruction: PROMPT_OBJECTIVE_SYSTEM,
@@ -423,7 +427,7 @@ export const refineLearningObjectives = async (context: string, direction: strin
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt,
     config: {
       systemInstruction: PROMPT_OBJECTIVE_SYSTEM,
@@ -455,7 +459,7 @@ export const generateFramework = async (context: string, objective: string, feed
   }
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: userPrompt,
     config: { systemInstruction: PROMPT_FRAMEWORK_SYSTEM }
   }));
@@ -478,7 +482,7 @@ export const generateCaseContent = async (context: string, objective: string, fr
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt,
     config: { systemInstruction: PROMPT_WRITING_SYSTEM }
   }));
@@ -530,7 +534,7 @@ ${currentTeachingNotes}
 
     try {
         const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-            model: "gemini-3-pro-preview",
+            model: getGenModel(),
             contents: contents,
             config: {
                 systemInstruction: systemPrompt,
@@ -574,7 +578,7 @@ ${currentTeachingNotes}
 
 const firewallInspect = async (text: string): Promise<string[]> => {
     const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-        model: "gemini-3-pro-preview",
+        model: getGenModel(),
         contents: PROMPT_FIREWALL_INSPECTOR + `\n${text.substring(0, 100000)}`,
         config: { 
             responseMimeType: "application/json",
@@ -590,7 +594,7 @@ const firewallInspect = async (text: string): Promise<string[]> => {
 
 const firewallFix = async (text: string, errors: string[]): Promise<string> => {
     const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-        model: "gemini-3-pro-preview",
+        model: getGenModel(),
         contents: `${PROMPT_FIREWALL_FIXER}\n\n【发现的错误】：${JSON.stringify(errors)}\n\n【待修复文档】：\n${text.substring(0, 100000)}`,
     }));
     return cleanText(response.text);
@@ -627,7 +631,7 @@ const runStrictFirewall = async (draft: string, onStatus?: (msg: string) => void
 
 const auditVisuals = async (text: string): Promise<string[]> => {
     const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-        model: "gemini-3-pro-preview",
+        model: getGenModel(),
         contents: PROMPT_VISUAL_AUDITOR + `\n${text.substring(0, 100000)}`,
         config: { 
             responseMimeType: "application/json",
@@ -643,7 +647,7 @@ const auditVisuals = async (text: string): Promise<string[]> => {
 
 const fixVisuals = async (text: string, errors: string[]): Promise<string> => {
     const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-        model: "gemini-3-pro-preview",
+        model: getGenModel(),
         contents: `${PROMPT_VISUAL_FIXER}\n\n【发现的视觉问题】：${JSON.stringify(errors)}\n\n【文档内容】：\n${text.substring(0, 100000)}`,
     }));
     return cleanText(response.text);
@@ -684,7 +688,7 @@ export const polishCaseContent = async (draft: string, onStatus?: (msg: string) 
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt,
     config: { systemInstruction: PROMPT_POLISH_SYSTEM }
   }));
@@ -701,7 +705,7 @@ export const generateTeachingNotes = async (context: string, objective: string, 
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt,
     config: { systemInstruction: PROMPT_TEACHING_SYSTEM }
   }));
@@ -716,7 +720,7 @@ export const polishTeachingNotes = async (draft: string, onStatus?: (msg: string
     `;
   
     const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-      model: "gemini-3-pro-preview",
+      model: getGenModel(),
       contents: prompt,
       config: { systemInstruction: "你是一位资深教授。请润色这份教学指南。必须使用简体中文。请保持Markdown格式干净，避免花哨的符号。" }
     }));
@@ -754,7 +758,7 @@ export const refineTextBySelection = async (
   `;
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt
   }));
 
@@ -819,7 +823,7 @@ export const refineContent = async (
   if (checkStop && checkStop()) throw new Error("STOPPED");
 
   const response = await callWithRetry<GenerateContentResponse>(() => getAiClient().models.generateContent({
-    model: "gemini-3-pro-preview",
+    model: getGenModel(),
     contents: prompt
   }));
 
