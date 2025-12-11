@@ -4,7 +4,7 @@ import { CaseStudyData, SearchSource, UploadedFile } from "../types";
 
 // Helper to get authenticated client dynamically
 const getAiClient = () => {
-  const apiKey = localStorage.getItem('GEMINI_API_KEY');
+  const apiKey = localStorage.getItem('GEMINI_API_KEY') || import.meta.env.VITE_GEMINI_API_KEY;
   if (!apiKey) {
     throw new Error("请先输入您的 Google Gemini API Key");
   }
